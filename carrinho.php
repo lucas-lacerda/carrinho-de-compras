@@ -4,49 +4,11 @@ session_start();
 require "header.php";
 require "db.php";
 
-$total = 0;
+require __DIR__."/vendor/autoload.php";
+use App\Models\Carrinho;
 
-//adiciona produto 
-if (!isset($_SESSION['carrinho'])) {
-    $_SESSION['carrinho'] = array();
-}
+$prod = new Carrinho();
 
-if (isset($_GET['acao'])) {
-    
-    //Adiciona ao carrinho
-    if ($_GET['acao'] == 'add') {
-        $id = intval($_GET['id']);
-        if (!isset($_SESSION['carrinho']['id'])) {
-            $_SESSION['carrinho'][$id] = 1;
-        } else {
-            $_SESSION['carrinho'][$id] += 1;
-        }
-    }
-
-    // Remove do carrinho
-    if ($_GET['acao'] == 'del') {
-        $id = intval($_GET['id']);
-        if(isset($_SESSION['carrinho'][$id])) {
-            unset($_SESSION['carrinho'][$id]);
-        }
-    }
-
-    // Atualiza Quantidade
-    if($_GET['acao'] == 'up') {
-        if(!empty($_POST['prod']) && is_array($_POST['prod'])) {
-            foreach($_POST['prod'] as $id => $qtd){
-                $id = intval($id);
-                $qtd = intval($qtd);
-                if (!empty($qtd) || $qtd <> 0) {
-                    $_SESSION['carrinho'][$id] = $qtd;
-                } else {
-                    unset($_SESSION['carrinho'][$id]);
-                }
-            }
-        }
-    }    
-
-}
 
 
 ?>
@@ -56,7 +18,7 @@ if (isset($_GET['acao'])) {
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-9 "> 
-            <form action="?acao=up" method="post">
+            <form action="app/Controllers/AtualizaQtdCart.php?acao=up" method="post">
                 <table class="table table-bordered w-100">
                     <thead>
                         <tr>
@@ -95,7 +57,7 @@ if (isset($_GET['acao'])) {
                                 <td><input type="text" size="3" name="prod[<?=$id?>]" value="<?=$qtd?>" /></td>
                                 <td width="89"><?=$preco?></td>
                                 <td width="100"><?=$sub?></td>
-                                <td width="64"><a href="?acao=del&id=<?=$id?>">Remove</a></td>
+                                <td width="64"><a href="app/Controllers/DeleteCart.php?acao=del&id=<?=$id?>">Remove</a></td>
                             </tr>
                         <?php endforeach; endif; ?>
                     
@@ -113,7 +75,12 @@ if (isset($_GET['acao'])) {
         </div>
         <div class="col-md-3 " >
             <div class="card text-center p-5 sticky-top " style="top: 90px;">
-                <h1><?=$total = number_format($total, 2, ',', '.');?></h1>
+                <h1>
+                    <?php
+                        $total = (!empty($total)) ? number_format($total, 2, ',', '.') : 0 ;
+                        echo $total;
+                    ?>
+                </h1>
                 <h5>Total</h5>
             </div>
         </div>

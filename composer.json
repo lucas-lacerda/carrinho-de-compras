@@ -1,0 +1,16 @@
+{
+    "name": "lucas/shop",
+    "description": "Carrinho de Compras",
+    "authors": [
+        {
+            "name": "Lucas",
+            "email": "lacerda.lucasc@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "require": {}
+}
