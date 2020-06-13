@@ -5,9 +5,9 @@ require "header.php";
 
 require __DIR__."/vendor/autoload.php";
 
-use App\Models\Carrinho;
+use App\Models\Loja;
+$produtos = new Loja;
 
-$produtos = new Carrinho;
 
 ?>
 
@@ -23,18 +23,18 @@ $produtos = new Carrinho;
 
           <?php 
           
-          foreach ($produtos->produtosLoja() as $lista) :
+          foreach ($produtos->produtosLoja() as $produto) :
 
           ?>
           <div class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100">
-              <a href="#"><img class="card-img-top" src=" <?="http://placehold.it/700x400?text=".$lista->id_divida?>" alt=""></a>
+              <a href="#"><img class="card-img-top" src=" <?="http://placehold.it/700x400?text=".$produto->id_divida?>" alt=""></a>
               <div class="card-body">
                 <h4 class="card-title">
-                  <a href="#"><?=$lista->descricao_divida;?></a>
+                  <a href="#"><?=$produto->descricao_divida;?></a>
                 </h4>
-                <h5><?=$lista->valor_divida;?></h5>
-                <a class="p-3" href="app/Controllers/addCart.php?acao=add&id=<?=$lista->id_divida?>">Comprar</a>
+                <h5><?=$produto->valor_divida;?></h5>
+                <a class="p-3" href="app/Controllers/addCart.php?acao=add&id=<?=$produto->id_divida?>">Comprar</a>
                 
               </div>
               

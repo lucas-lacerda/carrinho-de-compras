@@ -10,7 +10,6 @@ use App\Models\Carrinho;
 $prod = new Carrinho();
 
 
-
 ?>
 
 
@@ -37,29 +36,27 @@ $prod = new Carrinho();
                         ?>
                             <tr><td class="text-center" colspan="6">Não há produto no carrinho</td></tr>
                         <?php else : 
-                            
+
                             $total = 0;
-
                             foreach($_SESSION['carrinho'] as $id => $qtd) :
-                                $sql = "SELECT * FROM dividas WHERE id_divida={$id}";
-                                $result = $conn->query($sql);
-                                $row = $result->fetch_assoc();
 
-                                $nome  = $row['descricao_divida'];
-                                $preco = number_format($row['valor_divida'], 2, ',', '.');
-                                $sub   = number_format($row['valor_divida'] * $qtd, 2, ',', '.');
-                                $total += $row['valor_divida'] * $qtd;                          
-                                                        
+                                $produtos = $prod->listaProdCart($id);
+                                
+                                foreach ($produtos as $produto) :
+                                    $preco = number_format($produto->valor_divida, 2, ',', '.');
+                                    $sub   = number_format($produto->valor_divida * $qtd, 2, ',', '.');
+                                    $total += $produto->valor_divida * $qtd;     
+                                                                          
                             ?>
                             <tr>
-                                <td width="10"><?=$row['id_divida']?></td>
-                                <td width="244"><?=$nome?></td>
+                                <td width="10"><?=$produto->id_divida?></td>
+                                <td width="244"><?=$produto->descricao_divida?></td>
                                 <td><input type="text" size="3" name="prod[<?=$id?>]" value="<?=$qtd?>" /></td>
                                 <td width="89"><?=$preco?></td>
                                 <td width="100"><?=$sub?></td>
                                 <td width="64"><a href="app/Controllers/DeleteCart.php?acao=del&id=<?=$id?>">Remove</a></td>
                             </tr>
-                        <?php endforeach; endif; ?>
+                        <?php endforeach;endforeach; endif; ?>
                     
                         
                     </tbody>

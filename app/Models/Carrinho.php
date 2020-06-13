@@ -140,14 +140,9 @@ class Carrinho
 
     }
 
-    /**
-     * Lista todos os produtos
-     *
-     * @return void
-     */
-    public function produtosLoja()
+    public function listaProdCart($id)
     {
-        $produtos = $this->conexao()->select('SELECT * FROM dividas');
+        $produtos = $this->conexao()->select('SELECT * FROM dividas WHERE id_divida = :id', ['id' => $id]);
         return $produtos;
     }
 
